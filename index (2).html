@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setoran Tabungan</title>
+</head>
+<body>
+    <h1>Setoran Tabungan</h1>
+    <form id="depositForm">
+        <label for="depositAmount">Nominal Setoran:</label>
+        <input type="number" id="depositAmount" name="depositAmount" required>
+        <input type="hidden" id="userId" name="userId" value="12345">
+        <button type="submit">Setor</button>
+    </form>
+
+    <!-- Area untuk menampilkan pesan konfirmasi -->
+    <p id="confirmationMessage" style="color: green;"></p>
+    <p id="errorMessage" style="color: red;"></p>
+
+    <script>
+        const form = document.getElementById('depositForm');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        const errorMessage = document.getElementById('errorMessage');
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah refresh halaman
+
+            const depositAmount = document.getElementById('depositAmount').value;
+            const userId = document.getElementById('userId').value;
+
+            // Kirim permintaan GET ke server
+            fetch(`http://localhost/restsaving/server.php?userId=${userId}&depositAmount=${depositAmount}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Reset pesan
+                    confirmationMessage.textContent = '';
+                    errorMessage.textContent = '';
+
+                    if (data.status === "success") {
+                        confirmationMessage.textContent = data.pesan; // Tampilkan pesan sukses
+                    } else if (data.status === "info") {
+                        errorMessage.textContent = data.pesan; // Tampilkan info
+                    } else {
+                        errorMessage.textContent = "Terjadi kesalahan: " + data.pesan;
+                    }
+                })
+                .catch(error => {
+                    errorMessage.textContent = "Gagal menghubungi server.";
+                });
+        });
+    </script>
+</body>
+</html>
