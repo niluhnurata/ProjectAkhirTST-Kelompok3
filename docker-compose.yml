@@ -1,0 +1,22 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"  # Expose client (HTML/JS) on port 8081
+    networks:
+      - app-network
+
+  service:
+    build:
+      context: ./service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"  # Expose PHP SOAP service on port 8080
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

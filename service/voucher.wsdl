@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="VoucherService"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="Voucher"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="Voucher"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+  <wsdl:types>
+    <xsd:schema targetNamespace="Voucher">
+      <!-- Define any complex types here if needed -->
+    </xsd:schema>
+  </wsdl:types>
+
+  <!-- Messages -->
+  <wsdl:message name="addDepositRequest"/>
+  <wsdl:message name="addDepositResponse">
+    <wsdl:part name="return" type="xsd:string"/>
+  </wsdl:message>
+
+  <wsdl:message name="checkVoucherEligibilityRequest"/>
+  <wsdl:message name="checkVoucherEligibilityResponse">
+    <wsdl:part name="return" type="xsd:string"/>
+  </wsdl:message>
+
+  <!-- Port Type -->
+  <wsdl:portType name="VoucherPortType">
+    <wsdl:operation name="addDeposit">
+      <wsdl:input message="tns:addDepositRequest"/>
+      <wsdl:output message="tns:addDepositResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="checkVoucherEligibility">
+      <wsdl:input message="tns:checkVoucherEligibilityRequest"/>
+      <wsdl:output message="tns:checkVoucherEligibilityResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <!-- Binding -->
+  <wsdl:binding name="VoucherBinding" type="tns:VoucherPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="addDeposit">
+      <soap:operation soapAction="addDeposit"/>
+      <wsdl:input>
+        <soap:body use="encoded" namespace="Voucher" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="Voucher" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="checkVoucherEligibility">
+      <soap:operation soapAction="checkVoucherEligibility"/>
+      <wsdl:input>
+        <soap:body use="encoded" namespace="Voucher" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="Voucher" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+  <!-- Service -->
+  <wsdl:service name="VoucherService">
+    <wsdl:port name="VoucherPort" binding="tns:VoucherBinding">
+      <soap:address location="http://localhost/soap/server.php"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
