@@ -1,7 +1,7 @@
 <?php
 require('ticket.php');
 
-session_start(); // Pastikan sesi dimulai
+session_start(); 
 
 class TicketsService {
     private $tickets = [];
